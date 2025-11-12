@@ -3,9 +3,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../sec-styles/AppointmentSystem.css';
 
-
-
-
 const AppointmentSystem = () => {
   const [activeTab, setActiveTab] = useState('book');
   const [appointments, setAppointments] = useState([]);
@@ -37,18 +34,38 @@ const AppointmentSystem = () => {
       const response = await axios.get('/api/appointments/patient', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setAppointments(response.data);
+      console.log('Appointments response.data:', response.data);
+      // assume response.data is array; else adjust likewise
+      if (Array.isArray(response.data)) {
+        setAppointments(response.data);
+      } else {
+        console.warn('Expected array for appointments but got:', response.data);
+        setAppointments([]);
+      }
     } catch (error) {
       console.error('Error fetching appointments:', error);
+      setAppointments([]);
     }
   };
 
   const fetchDoctors = async () => {
     try {
       const response = await axios.get('/api/users/doctors');
-      setDoctors(response.data);
+      console.log('Doctors response.data:', response.data);
+      // Example: if API returns { doctors: [...] }
+      const data = Array.isArray(response.data)
+        ? response.data
+        : (Array.isArray(response.data.doctors) ? response.data.doctors : null);
+
+      if (data && Array.isArray(data)) {
+        setDoctors(data);
+      } else {
+        console.warn('Expected array for doctors but got:', response.data);
+        setDoctors([]);
+      }
     } catch (error) {
       console.error('Error fetching doctors:', error);
+      setDoctors([]);
     }
   };
 
@@ -79,7 +96,7 @@ const AppointmentSystem = () => {
       fetchAppointments();
       setActiveTab('my-appointments');
     } catch (error) {
-      alert('Error booking appointment: ' + error.response.data.message);
+      alert('Error booking appointment: ' + (error.response?.data?.message || error.message));
     }
   };
 
@@ -87,7 +104,8 @@ const AppointmentSystem = () => {
     if (window.confirm('Are you sure you want to cancel this appointment?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.put(`/api/appointments/${appointmentId}/status`, 
+        await axios.put(
+          `/api/appointments/${appointmentId}/status`,
           { status: 'cancelled' },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -106,19 +124,19 @@ const AppointmentSystem = () => {
       </div>
 
       <div className="appointment-tabs">
-        <button 
+        <button
           className={`appointment-tab ${activeTab === 'book' ? 'active' : ''}`}
           onClick={() => setActiveTab('book')}
         >
           Book Appointment
         </button>
-        <button 
+        <button
           className={`appointment-tab ${activeTab === 'my-appointments' ? 'active' : ''}`}
           onClick={() => setActiveTab('my-appointments')}
         >
           My Appointments
         </button>
-        <button 
+        <button
           className={`appointment-tab ${activeTab === 'doctors' ? 'active' : ''}`}
           onClick={() => setActiveTab('doctors')}
         >
@@ -132,8 +150,8 @@ const AppointmentSystem = () => {
           <form onSubmit={handleSubmit} className="appointment-form">
             <div className="form-group">
               <label>Select Department</label>
-              <select 
-                name="department" 
+              <select
+                name="department"
                 value={formData.department}
                 onChange={handleInputChange}
                 className="form-control"
@@ -151,17 +169,17 @@ const AppointmentSystem = () => {
 
             <div className="form-group">
               <label>Select Doctor</label>
-              <select 
-                name="doctorId" 
+              <select
+                name="doctorId"
                 value={formData.doctorId}
                 onChange={handleInputChange}
                 className="form-control"
                 required
               >
                 <option value="">Choose Doctor</option>
-                {doctors.map(doctor => (
+                {Array.isArray(doctors) && doctors.map(doctor => (
                   <option key={doctor._id} value={doctor._id}>
-                    Dr. {doctor.name} - {doctor.specialization}
+                    Dr. {doctor.name} – {doctor.specialization}
                   </option>
                 ))}
               </select>
@@ -182,8 +200,8 @@ const AppointmentSystem = () => {
 
             <div className="form-group">
               <label>Appointment Time</label>
-              <select 
-                name="appointmentTime" 
+              <select
+                name="appointmentTime"
                 value={formData.appointmentTime}
                 onChange={handleInputChange}
                 className="form-control"
@@ -255,7 +273,7 @@ const AppointmentSystem = () => {
                       {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                     </span>
                     {appointment.status === 'scheduled' && (
-                      <button 
+                      <button
                         onClick={() => cancelAppointment(appointment._id)}
                         className="btn-cancel"
                       >
@@ -274,19 +292,23 @@ const AppointmentSystem = () => {
         <div className="appointment-card">
           <h2>Available Doctors</h2>
           <div className="doctor-grid">
-            {doctors.map(doctor => (
-              <div key={doctor._id} className="doctor-card">
-                <div className="doctor-avatar">
-                  {doctor.name.charAt(0)}
+            {Array.isArray(doctors) && doctors.length > 0 ? (
+              doctors.map(doctor => (
+                <div key={doctor._id} className="doctor-card">
+                  <div className="doctor-avatar">
+                    {doctor.name.charAt(0)}
+                  </div>
+                  <h3>Dr. {doctor.name}</h3>
+                  <div className="doctor-specialization">{doctor.specialization}</div>
+                  <div className="doctor-department">{doctor.department}</div>
+                  <div className="doctor-experience">{doctor.experience} years experience</div>
+                  <div className="availability-badge">Available</div>
+                  <div className="consultation-fee">${doctor.consultationFee} consultation</div>
                 </div>
-                <h3>Dr. {doctor.name}</h3>
-                <div className="doctor-specialization">{doctor.specialization}</div>
-                <div className="doctor-department">{doctor.department}</div>
-                <div className="doctor-experience">{doctor.experience} years experience</div>
-                <div className="availability-badge">Available</div>
-                <div className="consultation-fee">${doctor.consultationFee} consultation</div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No doctors available at the moment.</p>
+            )}
           </div>
         </div>
       )}

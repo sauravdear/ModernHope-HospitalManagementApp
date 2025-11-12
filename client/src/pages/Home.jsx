@@ -68,6 +68,7 @@ export const Home = () => {
           </div>
           <div className="feature-card">
             <div className="feature-icon"><FaCalendarAlt /></div>
+            {/* <h3>Appointment System</h3> */}
             <h3><NavLink to='/appointments'>Appointment System</NavLink></h3>
             <p>Reduce no-shows with automated reminders and easy online booking for patients.</p>
           </div>
