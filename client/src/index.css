@@ -1,0 +1,37 @@
+
+@import "tailwindcss";
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Back Button Styles */
+.back-to-home-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #4F46E5;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.back-to-home-btn:hover {
+  background: #4338CA;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
+.back-icon {
+  font-size: 0.9rem;
+}

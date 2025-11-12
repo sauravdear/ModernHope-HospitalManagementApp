@@ -1,0 +1,73 @@
+/* src/styles/Solutions.css */
+.solutions-container {
+  font-family: 'Roboto', sans-serif;
+  color: #065f46;
+}
+
+.solutions-hero {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.solutions-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.solutions-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.solutions-grid-section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.solution-card {
+  border: 1px solid #d1fae5;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.solution-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+}
+
+.solution-icon-container {
+  color: #10b981;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.solution-card h3 {
+  color: #065f46;
+  margin-bottom: 1rem;
+}
+
+.solution-card p {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .solutions-hero {
+    padding: 4rem 1rem;
+  }
+  
+  .solutions-hero h1 {
+    font-size: 2rem;
+  }
+}
