@@ -49,7 +49,7 @@ const Navbar = () => {
   Welcome, {user?.name || user?.email || 'User'}
 </span>
               <div className="profile-dropdown">
-                <NavLink to="/ManagerProfile">Profile</NavLink>
+                <NavLink to="/profile">Profile</NavLink>
                 <NavLink to="/settings">Settings</NavLink>
                 <NavLink to="/dashboard">Dashboard</NavLink>
                 <button onClick={handleLogout} className="logout-btn">Logout</button>

@@ -13,7 +13,7 @@ import LearnMore from "./components/LearnMore";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import { PatientManagement } from "./sec-pages/PatientManagement";
-import HospitalManagerProfile from "./sec-pages/ManagerProfile";
+import Profile from "./sec-pages/Profile";
 import StaffSchedule from "./sec-pages/StaffSchedule";
 import AppointmentSystem from "./sec-pages/AppointmentSystem";
 import ErrorBoundary from "./sec-pages/ErrorBoundary";
@@ -38,7 +38,7 @@ const App = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/patient-management" element={<PatientManagement />} />
             <Route path="/staff-schedule" element={<StaffSchedule />} />
-            <Route path="/manager-profile" element={<HospitalManagerProfile />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/appointments" element={<AppointmentSystem />} />
           </Routes>
         </ErrorBoundary>
